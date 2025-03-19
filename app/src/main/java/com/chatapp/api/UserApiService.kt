@@ -1,34 +1,57 @@
 // UserApiService.kt (API 接口)
 package com.chatapp.api
 
+import com.chatapp.model.Friend
+import com.chatapp.model.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.DELETE
+import retrofit2.http.Query
 
 // 定义 API 响应模型
 data class AuthResponse(val token: String, val refreshToken: String)
 data class UserInfoResponse(val id: String, val username: String, val email: String)
 
 
-interface UserApiService {
-    @POST("/api/user/register")
-    suspend fun register(@Body request: Map<String, String>): Response<AuthResponse>
 
+interface UserApiService {
+
+    /**
+     * 用户登录
+     */
     @POST("/api/auth/login")
     suspend fun login(@Body request: Map<String, String>): Response<AuthResponse>
 
-    @POST("/api/auth/refresh")
-    suspend fun refresh(@Body request: Map<String, String>): Response<AuthResponse>
-
+    /**
+     * 获取当前用户信息
+     */
     @GET("/api/user/info")
-    suspend fun getUserInfo(): Response<UserInfoResponse>
+    suspend fun getUserInfo(): Response<User>
 
-    @PUT("/api/user/update")
-    suspend fun updateUser(@Body request: Map<String, String>): Response<UserInfoResponse>
+    /**
+     * 获取好友列表
+     */
+    @GET("/api/friends")
+    suspend fun getFriends(): Response<List<Friend>>
 
-    @DELETE("/api/user/delete")
-    suspend fun deleteUser(): Response<Unit>
+    /**
+     * 添加好友
+     */
+    @POST("/api/friends/add")
+    suspend fun addFriend(@Body request: Map<String, String>): Response<Unit>
+
+    /**
+     * 删除好友
+     */
+    @DELETE("/api/friends/remove")
+    suspend fun removeFriend(@Query("friendUsername") friendUsername: String): Response<Unit>
+
+    /**
+     * 用户登出
+     */
+    @POST("/api/auth/logout")
+    suspend fun logout(): Response<Unit>
 }

@@ -7,20 +7,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.chatapp.viewmodel.ChatViewModel
 
 @Composable
-fun ChatScreen(navController: NavController, viewModel: ChatViewModel = hiltViewModel()) {
-    var message by remember { mutableStateOf("") }
-    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text("Chat Room", style = MaterialTheme.typography.titleLarge)
-        Spacer(modifier = Modifier.height(16.dp))
-        BasicTextField(value = message, onValueChange = { message = it })
-        Button(onClick = { viewModel.sendMessage(message) }) {
-            Text("Send")
-        }
+fun ChatScreen(navController: NavController, userId: String, viewModel: ChatViewModel = hiltViewModel()) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        Text("Chat with $userId", fontSize = 24.sp, modifier = Modifier.padding(16.dp))
     }
 }

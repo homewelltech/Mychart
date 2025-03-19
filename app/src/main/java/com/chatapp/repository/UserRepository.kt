@@ -4,25 +4,55 @@ package com.chatapp.repository
 import com.chatapp.api.UserApiService
 import com.chatapp.api.AuthResponse
 import com.chatapp.api.UserInfoResponse
+import com.chatapp.model.Friend
+import com.chatapp.model.User
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
 
-
-
 @Singleton
 class UserRepository @Inject constructor(private val api: UserApiService) {
-    suspend fun login(username: String, password: String): Response<AuthResponse> =
-        api.login(mapOf("username" to username, "password" to password))
 
-    suspend fun register(username: String, password: String, role: String): Response<AuthResponse> =
-        api.register(mapOf("username" to username, "password" to password, "role" to role))
+    /**
+     * 用户登录
+     */
+    suspend fun login(username: String, password: String): Response<AuthResponse> {
+        return api.login(mapOf("username" to username, "password" to password))
+    }
 
-    suspend fun getUserInfo(): Response<UserInfoResponse> = api.getUserInfo()
+    /**
+     * 获取用户信息
+     */
+    suspend fun getUserInfo(): Response<User> {
+        return api.getUserInfo()
+    }
 
-    suspend fun updateUser(username: String, password: String): Response<UserInfoResponse> =
-        api.updateUser(mapOf("username" to username, "password" to password))
+    /**
+     * 获取好友列表
+     */
+    suspend fun getFriends(): Response<List<Friend>> {
+        return api.getFriends()
+    }
 
-    suspend fun deleteUser(): Response<Unit> = api.deleteUser()
+    /**
+     * 添加好友
+     */
+    suspend fun addFriend(username: String, friendUsername: String): Response<Unit> {
+        return api.addFriend(mapOf("username" to username, "friendUsername" to friendUsername))
+    }
+
+    /**
+     * 删除好友
+     */
+    suspend fun removeFriend(friendUsername: String): Response<Unit> {
+        return api.removeFriend(friendUsername)
+    }
+
+    /**
+     * 用户登出
+     */
+    suspend fun logout(): Response<Unit> {
+        return api.logout()
+    }
 }

@@ -89,4 +89,6 @@ dependencies {
     // 可选：使用 Kotlin 的协程支持
     implementation(libs.room.ktx)
 
+    implementation(libs.coil.compose)
+
 }

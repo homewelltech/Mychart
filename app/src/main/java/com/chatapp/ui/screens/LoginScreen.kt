@@ -21,19 +21,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.chatapp.R
 import com.chatapp.viewmodel.UserViewModel
+
+
 @Composable
 fun LoginScreen(navController: NavController, viewModel: UserViewModel = hiltViewModel()) {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var errorMessage by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val sharedPreferences = remember { context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE) }
 
-    // 读取已存储的账号密码
-    LaunchedEffect(Unit) {
-        viewModel.getSavedUserData()?.let { (savedUsername, savedPassword) ->
-            username = savedUsername
-            password = savedPassword
-        }
-    }
+    var username by remember { mutableStateOf(sharedPreferences.getString("username", "") ?: "") }
+    var password by remember { mutableStateOf(sharedPreferences.getString("password", "") ?: "") }
+    var errorMessage by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -53,7 +50,12 @@ fun LoginScreen(navController: NavController, viewModel: UserViewModel = hiltVie
                 modifier = Modifier.size(80.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
-            Text("吾记", fontSize = 28.sp, color = Color.White, textAlign = TextAlign.Center)
+            Text(
+                "吾记",
+                fontSize = 28.sp,
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
             Spacer(modifier = Modifier.height(24.dp))
 
             OutlinedTextField(
@@ -77,7 +79,13 @@ fun LoginScreen(navController: NavController, viewModel: UserViewModel = hiltVie
             Button(
                 onClick = {
                     viewModel.login(username, password,
-                        onSuccess = { navController.navigate("chat") },
+                        onSuccess = {
+                            sharedPreferences.edit()
+                                .putString("username", username)
+                                .putString("password", password)
+                                .apply()
+                            navController.navigate("main")
+                        },
                         onError = { errorMessage = it }
                     )
                 },
