@@ -12,6 +12,7 @@ import retrofit2.http.DELETE
 data class AuthResponse(val token: String, val refreshToken: String)
 data class UserInfoResponse(val id: String, val username: String, val email: String)
 
+
 interface UserApiService {
     @POST("/api/user/register")
     suspend fun register(@Body request: Map<String, String>): Response<AuthResponse>

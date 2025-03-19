@@ -1,12 +1,15 @@
 // AppModule.kt (依赖注入模块)
 package com.chatapp.di
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import com.chatapp.api.UserApiService
 import com.chatapp.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -18,6 +21,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    private const val BASE_URL = "http://192.168.10.66:8085"
+
 
     @Provides
     @Singleton
@@ -52,7 +57,7 @@ object AppModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.10.66:8085") // ✅ 更新 API Base URL
+            .baseUrl(BASE_URL) // ✅ 更新 API Base URL
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
@@ -64,9 +69,16 @@ object AppModule {
         return retrofit.create(UserApiService::class.java)
     }
 
+
+
     @Provides
     @Singleton
-    fun provideUserRepository(apiService: UserApiService): UserRepository {
-        return UserRepository(apiService)
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("chatapp_prefs", Context.MODE_PRIVATE)
+    }
+    @Provides
+    @Singleton
+    fun provideUserRepository(api: UserApiService): UserRepository {
+        return UserRepository(api)
     }
 }
