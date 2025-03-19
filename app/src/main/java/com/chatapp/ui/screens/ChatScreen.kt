@@ -12,7 +12,6 @@ import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.chatapp.viewmodel.ChatViewModel
 
-
 @Composable
 fun ChatScreen(navController: NavController, viewModel: ChatViewModel = hiltViewModel()) {
     var message by remember { mutableStateOf("") }

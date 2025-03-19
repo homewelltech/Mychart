@@ -1,3 +1,5 @@
+
+// LoginScreen.kt (登录界面)
 package com.chatapp.ui.screens
 
 import androidx.compose.foundation.layout.*
@@ -7,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.chatapp.viewmodel.UserViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.chatapp.viewmodel.UserViewModel
 
 @Composable
 fun LoginScreen(navController: NavController, viewModel: UserViewModel = hiltViewModel()) {
