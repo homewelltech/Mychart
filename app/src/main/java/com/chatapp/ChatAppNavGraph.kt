@@ -33,7 +33,9 @@ fun ChatAppNavGraph(navController: NavHostController) {
         }
         composable("chat/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: return@composable
-            ChatScreen(navController, userId)
+            ChatScreen(userId = userId)
         }
+
+
     }
 }

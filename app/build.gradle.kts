@@ -90,5 +90,6 @@ dependencies {
     implementation(libs.room.ktx)
 
     implementation(libs.coil.compose)
+    implementation(libs.accompanist.systemuicontroller)
 
 }

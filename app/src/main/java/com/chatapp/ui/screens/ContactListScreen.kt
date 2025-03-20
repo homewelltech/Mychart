@@ -27,57 +27,34 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.res.painterResource
 import com.chatapp.R
 
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactListScreen(navController: NavController) {
     val contactList = remember {
         mutableStateListOf(
-            Friend(username = "君尚", avatar = null, isOnline = false, lastSeen = "6 hours ago"),
-            Friend(username = "王宁", avatar = null, isOnline = false, lastSeen = "7 hours ago"),
-            Friend(username = "凌峰", avatar = null, isOnline = false, lastSeen = "Yesterday at 10:36 PM"),
-            Friend(username = "金陵", avatar = null, isOnline = false, lastSeen = "01/17/25"),
-            Friend(username = "金陵", avatar = null, isOnline = false, lastSeen = "01/17/25"),
-            Friend(username = "夏夏", avatar = null, isOnline = false, lastSeen = "11/28/24"),
-            Friend(username = "夏夏", avatar = null, isOnline = false, lastSeen = "11/28/24"),
-            Friend(username = "夏夏", avatar = null, isOnline = false, lastSeen = "11/28/24"),
-            Friend(username = "夏夏", avatar = null, isOnline = false, lastSeen = "11/28/24"),
-            Friend(username = "夏夏", avatar = null, isOnline = false, lastSeen = "11/28/24"),
-            Friend(username = "夏夏", avatar = null, isOnline = false, lastSeen = "11/28/24"),
-            Friend(username = "夏夏", avatar = null, isOnline = false, lastSeen = "11/28/24"),
-            Friend(username = "建林", avatar = null, isOnline = false, lastSeen = "10/12/24"),
-            Friend(username = "元气森林", avatar = null, isOnline = true, lastSeen = "Recently")
+            Friend(userId = "1", username = "Alice", avatar = null, isOnline = false, lastSeen = "6 hours ago"),
+            Friend(userId = "2", username = "Bob", avatar = null, isOnline = false, lastSeen = "7 hours ago"),
+            Friend(userId = "3", username = "Charlie", avatar = null, isOnline = true, lastSeen = "Recently")
         )
     }
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Contacts", fontSize = 20.sp, fontWeight = FontWeight.Bold) },
-                actions = {
-                    IconButton(onClick = { /* 添加好友逻辑 */ }) {
-                        Icon(Icons.Filled.Add, contentDescription = "Add Friend", tint = Color.White)
-                    }
-                },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color(0xFF62D78E), // 更柔和的绿色
-                    titleContentColor = Color.White
-                )
+                title = { Text("Contacts", fontSize = 20.sp, fontWeight = FontWeight.Bold) }
             )
         }
     ) { paddingValues ->
         LazyColumn(
             modifier = Modifier
                 .padding(paddingValues)
-                .background(Color(0xFFEFEFEF)) // 更柔和的背景颜色
+                .background(Color(0xFFEFEFEF))
         ) {
             items(contactList) { friend ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 6.dp, horizontal = 12.dp) // 缩小间距
-                        .clickable { navController.navigate("chat/${friend.username}") }
+                        .clickable { navController.navigate("chat/${friend.userId}") } // ✅ 传递 userId
                         .background(Color.White, shape = MaterialTheme.shapes.medium)
                         .padding(10.dp),
                     verticalAlignment = Alignment.CenterVertically
