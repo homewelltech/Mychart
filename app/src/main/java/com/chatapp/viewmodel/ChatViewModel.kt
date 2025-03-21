@@ -14,9 +14,9 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class ChatViewModel @Inject constructor() : ViewModel() {
+open class ChatViewModel @Inject constructor() : ViewModel() {
     private val _messages = MutableStateFlow<List<ChatMessage>>(emptyList()) // ✅ 确保 `messages` 是 `List<ChatMessage>`
-    val messages: StateFlow<List<ChatMessage>> = _messages
+    open val messages: StateFlow<List<ChatMessage>> = _messages
 
 
     // 🔹 模拟存储用户 ID 与名称
@@ -41,13 +41,13 @@ class ChatViewModel @Inject constructor() : ViewModel() {
         )
 
 
-    fun getUsername(userId: String): StateFlow<String> {
+    open fun getUsername(userId: String): StateFlow<String> {
 //        val username = userMap[userId] ?: "Unknown User"
         val username= chatList.last { it.userId == userId }.username
         return MutableStateFlow(username) // ✅ 确保 UI 监听用户名变化
     }
 
-    fun sendMessage(userId: String, text: String) {
+    open fun sendMessage(userId: String, text: String) {
         val newMessage = ChatMessage(
             id = (_messages.value.size + 1).toString(),
             text = text,

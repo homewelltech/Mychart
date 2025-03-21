@@ -42,7 +42,7 @@ fun MainScreen(navController: NavController) {
             when (selectedTab) {
                 0 -> ChatListScreen(navController)
                 1 -> ContactListScreen(navController)
-                2 -> SettingsScreen(navController as NavHostController)
+                2 -> SettingsScreen()
             }
         }
     }

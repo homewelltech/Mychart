@@ -55,8 +55,8 @@ fun ChatListScreen(navController: NavController) {
             Box(modifier = Modifier.systemBarsPadding()) {
                 CenterAlignedTopAppBar(
                     title = { Text("Chats", fontSize = 20.sp, fontWeight = FontWeight.Bold) },
-                    colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                        containerColor = topBarColor, // ✅ 让 `TopAppBar` 颜色和 `状态栏` 颜色一致
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary, // ✅ 颜色适配 Material3
                         titleContentColor = Color.White
                     )
                 )

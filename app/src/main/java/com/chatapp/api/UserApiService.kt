@@ -3,12 +3,16 @@ package com.chatapp.api
 
 import com.chatapp.model.Friend
 import com.chatapp.model.User
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.DELETE
+import retrofit2.http.Multipart
+import retrofit2.http.Part
 import retrofit2.http.Query
 
 // 定义 API 响应模型
@@ -54,4 +58,20 @@ interface UserApiService {
      */
     @POST("/api/auth/logout")
     suspend fun logout(): Response<Unit>
+
+
+
+    @Multipart
+    @POST("/api/avatar/upload")
+    suspend fun uploadAvatar(
+        @Part("userId") userId: RequestBody,
+        @Part file: MultipartBody.Part
+    ): Response<Map<String, String>>
+
+
+    @GET("/api/avatar/get")
+    suspend fun getAvatar(@Query("userId") userId: String): Response<Map<String, String>> // 假设返回：{ "avatarUrl": "http://..." }
+
+    @GET("/api/avatar/default")
+    suspend fun getDefaultAvatar(): Response<Map<String, String>> // 假设返回：{ "avatarUrl": "http://..." }
 }

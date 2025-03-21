@@ -21,7 +21,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-    private const val BASE_URL = "http://192.168.10.221:8085"
+    private const val BASE_URL = "http://192.168.10.119:8085"
 
 
     @Provides
@@ -29,18 +29,43 @@ object AppModule {
     fun provideLoggingInterceptor(): Interceptor {
         return Interceptor { chain ->
             val request = chain.request()
-            Log.d(
-                "API_REQUEST",
-                "Sending request: ${'$'}{request.url} \nHeaders: ${'$'}{request.headers}"
-            )
+
+            val isMultipart = request.body?.contentType()?.type == "multipart"
+            val isStreamOrFile = request.body?.contentType()?.subtype?.contains("octet-stream") == true
+
+            // 请求日志
+            if (isMultipart || isStreamOrFile) {
+                Log.d("API_REQUEST", "🚀 Sending multipart/file request: ${request.url}\nHeaders: ${request.headers}")
+            } else {
+                val requestBodyString = request.body?.let { body ->
+                    try {
+                        val buffer = okio.Buffer()
+                        body.writeTo(buffer)
+                        buffer.readUtf8()
+                    } catch (e: Exception) {
+                        "body read error"
+                    }
+                } ?: "No body"
+
+                Log.d("API_REQUEST", "📤 Sending request: ${request.url}\nHeaders: ${request.headers}\nBody: $requestBodyString")
+            }
+
             val response = chain.proceed(request)
-            Log.d(
-                "API_RESPONSE",
-                "Received response: ${'$'}{response.request.url} \nStatus: ${'$'}{response.code}"
-            )
+
+            val responseContentType = response.body?.contentType()?.subtype ?: ""
+            val isResponseStream = responseContentType.contains("octet-stream") || responseContentType.contains("image") || responseContentType.contains("video")
+
+            // 响应日志
+            if (isResponseStream) {
+                Log.d("API_RESPONSE", "📥 Received file response: ${response.request.url}\nStatus: ${response.code}\nContent-Type: $responseContentType")
+            } else {
+                Log.d("API_RESPONSE", "✅ Received response: ${response.request.url}\nStatus: ${response.code}")
+            }
+
             response
         }
     }
+
 
     @Provides
     @Singleton

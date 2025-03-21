@@ -1,11 +1,17 @@
 // UserRepository.kt (数据管理层)
 package com.chatapp.repository
 
+import android.content.Context
+import android.net.Uri
 import com.chatapp.api.UserApiService
 import com.chatapp.api.AuthResponse
 import com.chatapp.api.UserInfoResponse
 import com.chatapp.model.Friend
 import com.chatapp.model.User
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -54,5 +60,36 @@ class UserRepository @Inject constructor(private val api: UserApiService) {
      */
     suspend fun logout(): Response<Unit> {
         return api.logout()
+    }
+
+
+    suspend fun uploadAvatar(userId: String, fileUri: Uri, context: Context): String? {
+        val inputStream = context.contentResolver.openInputStream(fileUri) ?: return null
+        val bytes = inputStream.readBytes()
+        val requestFile = bytes.toRequestBody("image/*".toMediaTypeOrNull())
+        val multipartFile = MultipartBody.Part.createFormData("file", "avatar.jpg", requestFile)
+
+        val userIdBody = userId.toRequestBody("text/plain".toMediaType())
+
+        val response = api.uploadAvatar(userIdBody, multipartFile)
+
+        return if (response.isSuccessful) {
+            response.body()?.get("avatarUrl")
+        } else null
+    }
+
+
+    suspend fun getAvatar(userId: String): String? {
+        val response = api.getAvatar(userId)
+        return if (response.isSuccessful) {
+            response.body()?.get("avatarUrl")
+        } else null
+    }
+
+    suspend fun getDefaultAvatar(): String? {
+        val response = api.getDefaultAvatar()
+        return if (response.isSuccessful) {
+            response.body()?.get("avatarUrl")
+        } else null
     }
 }

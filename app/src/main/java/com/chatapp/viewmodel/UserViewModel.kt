@@ -1,6 +1,8 @@
 package com.chatapp.viewmodel
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +11,8 @@ import com.chatapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+import com.chatapp.R
 
 
 
@@ -157,4 +161,14 @@ class UserViewModel @Inject constructor(
             }
         }
     }
+
+
+    fun uploadAvatar(context: Context, imageUri: Uri, userId: String, onResult: (String?) -> Unit) {
+        viewModelScope.launch {
+            val url = userRepository.uploadAvatar(userId, imageUri, context)
+            onResult(url)
+        }
+    }
+
+
 }

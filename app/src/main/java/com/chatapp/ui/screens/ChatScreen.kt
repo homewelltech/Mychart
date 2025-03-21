@@ -42,6 +42,48 @@ import kotlin.reflect.typeOf
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PreviewChatScreen() {
+    val fakeViewModel = remember { FakeChatViewModel() }
+    ChatScreenPreview(userId = "1", viewModel = fakeViewModel)
+}
+@Composable
+fun ChatScreenPreview(
+    userId: String,
+    viewModel: ChatViewModel
+) {
+    ChatScreen(userId = userId, viewModel = viewModel)
+}
+
+class FakeChatViewModel : ChatViewModel() {
+    private val _fakeMessages = MutableStateFlow(
+        listOf(
+            ChatMessage("1", "你好 👋", "10:00", isSentByUser = false),
+            ChatMessage("2", "Hi there!", "10:01", isSentByUser = true),
+            ChatMessage("3", "欢迎使用预览模式", "10:02", isSentByUser = false)
+        )
+    )
+
+    override val messages: StateFlow<List<ChatMessage>> = _fakeMessages
+
+    override fun getUsername(userId: String): StateFlow<String> {
+        return MutableStateFlow("预览用户")
+    }
+
+    override fun sendMessage(userId: String, text: String) {
+        // 不需要处理，Preview 下无需发送逻辑
+    }
+}
+
+
+
+
 
 
 

@@ -2,8 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("kotlin-kapt")  // Kotlin 注解处理器
+//    id("kotlin-kapt")  // Kotlin 注解处理器
     id("com.google.dagger.hilt.android")  // Hilt 插件
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -78,13 +79,13 @@ dependencies {
 
 
     implementation(libs.hilt.android)  // Hilt 依赖
-    kapt(libs.hilt.android.compiler)   // Hilt 编译器（必须）
+    ksp(libs.hilt.android.compiler)   // Hilt 编译器（必须）
 
 
 
     // Room 组件
     implementation(libs.room.runtime)   // 运行时
-    kapt("androidx.room:room-compiler:2.6.1")          // 编译器（Kotlin 使用 kapt）
+    ksp(libs.androidx.room.compiler)          // 编译器（Kotlin 使用 kapt）
     implementation(libs.androidx.hilt.navigation.compose) // ✅ 需要这个依赖
     // 可选：使用 Kotlin 的协程支持
     implementation(libs.room.ktx)
