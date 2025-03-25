@@ -19,10 +19,10 @@ import com.chatapp.ui.components.MessageItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
-    messages: List<String>,
-    onSendMessage: (String) -> Unit,
-    isLoading: Boolean = false,
-    errorMessage: String? = null
+
+    conversationId: String?,
+    isGroup: Boolean=false
+
 ) {
     var messageText by remember { mutableStateOf("") }
     val backgroundBrush = Brush.verticalGradient(
@@ -46,10 +46,10 @@ fun ChatScreen(
                         .animateContentSize(),
                     contentPadding = PaddingValues(16.dp)
                 ) {
-                    items(messages) { message ->
-                        MessageItem(message = message, isOwnMessage = false)
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
+//                    items(messages) { message ->
+//                        MessageItem(message = message, isOwnMessage = false)
+//                        Spacer(modifier = Modifier.height(8.dp))
+//                    }
                 }
                 Divider()
                 Row(
@@ -68,7 +68,6 @@ fun ChatScreen(
                     Button(
                         onClick = {
                             if (messageText.isNotBlank()) {
-                                onSendMessage(messageText)
                                 messageText = ""
                             }
                         },
@@ -79,16 +78,7 @@ fun ChatScreen(
                         Text("Send")
                     }
                 }
-                if (isLoading) {
-                    LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-                }
-                errorMessage?.let {
-                    Text(
-                        text = it,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
+
             }
         }
     }

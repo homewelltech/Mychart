@@ -14,25 +14,11 @@ import com.chatapp.ui.components.FriendItem
 
 @Composable
 fun FriendListScreen(
-    friends: List<Pair<String, String>>,
-    isLoading: Boolean = false,
-    errorMessage: String? = null
+
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        when {
-            isLoading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            }
-            errorMessage != null -> {
-                Text(text = errorMessage, modifier = Modifier.align(Alignment.Center))
-            }
-            else -> {
-                LazyColumn(contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp)) {
-                    items(friends) { friend ->
-                        FriendItem(userId = friend.first, nickname = friend.second)
-                    }
-                }
-            }
-        }
+
+        Text("好友列表")
+
     }
 }
