@@ -19,6 +19,8 @@ class UserViewModel @Inject constructor(
 
     private val _loginState = mutableStateOf<UiState<Boolean>>(UiState.Success(false))
     val loginState: State<UiState<Boolean>> = _loginState
+    val token: String=""
+
 
     fun login(userId: String, password: String) {
         viewModelScope.launch {
@@ -26,7 +28,11 @@ class UserViewModel @Inject constructor(
             try {
                 val response = userRepository.login(userId, password)
                 if (response.isSuccessful) {
+                    // 登陆成功，保存token
+
+
                     _loginState.value = UiState.Success(true)
+
                 } else {
                     _loginState.value = UiState.Error("Login failed: ${response.message()}")
                 }

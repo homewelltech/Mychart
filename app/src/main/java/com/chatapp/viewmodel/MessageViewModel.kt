@@ -42,8 +42,9 @@ class MessageViewModel @Inject constructor(
 //            conversations.collect {
 //                _conversations.value = fakeConversations
 //            }
+            _conversations.value = fakeConversations
 
-            
+
 
 
         }

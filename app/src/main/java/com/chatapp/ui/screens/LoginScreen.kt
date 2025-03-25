@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.chatapp.model.UiState
 import com.chatapp.viewmodel.UserViewModel
-import com.example.chatapp.utils.LoginPreference
+import com.chatapp.utils.LoginPreference
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,7 +31,9 @@ fun LoginScreen(
     // 尝试自动填充上次登录的用户信息
     var userId by remember { mutableStateOf(LoginPreference.getUserId(context) ?: "") }
     var password by remember { mutableStateOf(LoginPreference.getPassword(context) ?: "") }
+
     val loginState = userViewModel.loginState.value
+    var token=""
     val snackbarHostState = remember { SnackbarHostState() }
 
     // 渐变背景

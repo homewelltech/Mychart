@@ -22,10 +22,9 @@ import androidx.navigation.NavController
 import com.chatapp.model.Conversation
 import com.chatapp.viewmodel.MessageViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.chatapp.R // 假设 R.drawable.* 有相关资源
 import com.chatapp.ui.nav.Screen
-import com.example.chatapp.utils.LoginPreference
+import com.chatapp.utils.LoginPreference
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

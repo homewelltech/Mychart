@@ -1,11 +1,9 @@
 package com.chatapp.data.remote.response
 
+import com.chatapp.model.Friend
+
 data class FriendResponse(
     val total: Int,
-    val friends: List<FriendInfo>
+    val friends: List<Friend>
 )
 
-data class FriendInfo(
-    val userId: String,
-    val nickname: String
-)
