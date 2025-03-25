@@ -122,8 +122,8 @@ URL: /api/friends/add
 
 请求参数:
 
-
-
+~~
+~~
 
 {
 "receiverId": "193039",  // 接收方用户ID
