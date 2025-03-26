@@ -44,10 +44,14 @@ class FriendViewModel @Inject constructor(
 
                 // 调用 Repository 获取好友列表
                 val response = friendRepository.getFriends()
+                println("response.isSuccessful ${response.isSuccessful}")
                 if (response.isSuccessful) {
                     // 假设后端返回 data.friends: List<Friend>
-                    val friendList = response.body()?.data?.friends ?: emptyList()
+                    print("拿到数据了  1")
+
+                    val friendList = response.body()?.data?.content ?: emptyList()
                     _friendListState.value = friendList
+                    println("拿到数据了 ${friendList.toString()}")
                 } else {
                     _errorMessage.value = "Failed to fetch friend list: ${response.code()}"
                 }
@@ -68,9 +72,7 @@ class FriendViewModel @Inject constructor(
             try {
                 // 构造请求体，status='SENT'
                 val request = FriendRequest(
-                    userId = null,   // 后端从JWT获取当前用户
-                    friendUserId = friendId,
-                    status = "SENT"
+
                 )
                 val response = friendRepository.addFriend(request)
                 onResult(response.isSuccessful)
@@ -89,9 +91,7 @@ class FriendViewModel @Inject constructor(
             try {
                 // 构造请求体，status='DELETED'
                 val request = FriendRequest(
-                    userId = null,
-                    friendUserId = friendId,
-                    status = "DELETED"
+
                 )
                 val response = friendRepository.removeFriend(request)
                 onResult(response.isSuccessful)

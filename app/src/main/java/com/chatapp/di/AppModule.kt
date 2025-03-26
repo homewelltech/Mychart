@@ -1,6 +1,7 @@
 package com.example.chatapp.di
 
 import android.content.Context
+import androidx.compose.ui.platform.LocalContext
 import androidx.room.Room
 import com.chatapp.data.local.ChatDatabase
 import com.chatapp.data.local.dao.ChatRoomDao
@@ -13,7 +14,10 @@ import com.chatapp.data.remote.api.FriendApi
 import com.chatapp.data.remote.api.GroupApi
 import com.chatapp.data.remote.api.MessageApi
 import com.chatapp.data.remote.api.UserApi
+import com.chatapp.data.remote.interceptor.AuthInterceptor
 import com.chatapp.data.remote.interceptor.LoggingInterceptor
+import com.chatapp.utils.LoginPreference
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,6 +32,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
     const val BASE_URL = "http://192.168.10.119:8085" // 替换为实际的 API 地址
+
 
     // 提供 Room 数据库实例
     @Provides
@@ -63,6 +68,7 @@ object AppModule {
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor())
             .addInterceptor(LoggingInterceptor())
             .build()
     }

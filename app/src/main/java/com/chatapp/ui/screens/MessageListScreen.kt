@@ -33,7 +33,7 @@ fun MessageListScreen(
     messageViewModel: MessageViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    var userId by remember { mutableStateOf(LoginPreference.getUserId(context) ?: "") }
+    var userId by remember { mutableStateOf(LoginPreference.getUserId() ?: "") }
     // 从 ViewModel 加载会话
     LaunchedEffect(userId) {
         messageViewModel.loadConversations()

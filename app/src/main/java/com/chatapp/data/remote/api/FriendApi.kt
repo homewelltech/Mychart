@@ -14,6 +14,6 @@ interface FriendApi {
     @POST("/api/friends/remove")
     suspend fun removeFriend(@Body request: FriendRequest): Response<ApiResponse<Any>>
 
-    @POST("/api/friends")
+    @POST("/api/friends/page")
     suspend fun getFriends(@Body request: FriendRequest): Response<ApiResponse<FriendResponse>>
 }

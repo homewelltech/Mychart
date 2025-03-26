@@ -29,11 +29,11 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
     // 尝试自动填充上次登录的用户信息
-    var userId by remember { mutableStateOf(LoginPreference.getUserId(context) ?: "") }
-    var password by remember { mutableStateOf(LoginPreference.getPassword(context) ?: "") }
+    var userId by remember { mutableStateOf(LoginPreference.getUserId() ?: "") }
+    var password by remember { mutableStateOf(LoginPreference.getPassword() ?: "") }
 
     val loginState = userViewModel.loginState.value
-    var token=""
+
     val snackbarHostState = remember { SnackbarHostState() }
 
     // 渐变背景
@@ -47,7 +47,8 @@ fun LoginScreen(
             is UiState.Success -> {
                 if (loginState.data) {
                     // 登录成功后保存用户信息
-                    LoginPreference.saveLoginInfo(context, userId, password)
+                    LoginPreference.saveLoginInfo(context, userId, password,userViewModel.token.value)
+                    println("保存token成功：${userViewModel.token.value}")
                     onLoginSuccess()
                 }
             }

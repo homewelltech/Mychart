@@ -22,7 +22,7 @@ fun FriendListScreen(
 ) {
     // 本地获取 userId（仅显示用途，不再传接口）
     val context = LocalContext.current
-    var userId by remember { mutableStateOf(LoginPreference.getUserId(context) ?: "") }
+    var userId by remember { mutableStateOf(LoginPreference.getUserId() ?: "") }
 
     // 状态
     val friendList by friendViewModel.friendListState
@@ -104,7 +104,9 @@ fun FriendListScreen(
                             FriendItem(
                                 userId = friend.userId,
                                 nickname = friend.nickname,
-                                // onClick = { ... }
+                                 onClick = {
+                                     println("点击了 ${friend.nickname}  ${friend.userId}")
+                                 }
                             )
                         }
                     }

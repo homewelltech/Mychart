@@ -25,7 +25,7 @@ class FriendRepository @Inject constructor(
     suspend fun getFriends(): Response<ApiResponse<FriendResponse>> {
         // 通过 FriendRequest 可以只传必要字段（若后端需要，可传 status="GET" 或 friendId=null）
         // 也可直接定义一个无参接口，如 friendApi.getFriends()。
-        return friendApi.getFriends(FriendRequest(null, null, "GET"))
+        return friendApi.getFriends(FriendRequest(0, 10))
     }
 
     /**
