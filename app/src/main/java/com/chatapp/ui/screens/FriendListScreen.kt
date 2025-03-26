@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.chatapp.ui.components.AddFriendDialog
 import com.chatapp.viewmodel.FriendViewModel
 import com.chatapp.utils.LoginPreference
@@ -18,6 +19,8 @@ import com.chatapp.ui.components.FriendItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FriendListScreen(
+    navController: NavController,
+
     friendViewModel: FriendViewModel = hiltViewModel()
 ) {
     // 本地获取 userId（仅显示用途，不再传接口）
@@ -105,7 +108,10 @@ fun FriendListScreen(
                                 userId = friend.userId,
                                 nickname = friend.nickname,
                                  onClick = {
-                                     println("点击了 ${friend.nickname}  ${friend.userId}")
+                                     // 通过 NavController 跳转到聊天界面
+                                     navController.navigate(
+                                         "chat?conversationId=${friend.userId}&isGroup=false&nikeName=${friend.nickname}"
+                                     )
                                  }
                             )
                         }

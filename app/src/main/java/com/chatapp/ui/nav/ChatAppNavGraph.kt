@@ -54,12 +54,14 @@ fun ChatAppNavGraph(navController: NavHostController) {
 
         // 4) 聊天详情 (独立在顶层，不在 MainScreen 内部)
         // 可以使用 query 参数或 path param
-        composable(route = Screen.Chat.route + "?conversationId={conversationId}&isGroup={isGroup}") {
+        composable(route = Screen.Chat.route + "?conversationId={conversationId}&isGroup={isGroup}&nikeName={nikeName}") {
             val conversationId = it.arguments?.getString("conversationId") ?: ""
             val isGroup = it.arguments?.getBoolean("isGroup") ?: false
+            val nikeName=it.arguments?.getString("nikeName")
 
             ChatScreen(
                 conversationId = conversationId,
+                nikeName=nikeName,
                 isGroup = isGroup
             )
         }
@@ -77,4 +79,7 @@ sealed class Screen(val route: String) {
     object MessageList : Screen("messageList")
     object FriendList : Screen("friendList")
     object Settings : Screen("settings")
+
+
+
 }

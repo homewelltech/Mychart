@@ -83,7 +83,7 @@ fun MainScreen(
             composable(Screen.FriendList.route) {
                 // 好友列表
                 FriendListScreen(
-
+                    navController=navController
 
                 )
             }
